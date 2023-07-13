@@ -100,3 +100,28 @@ if search_button:
             display_car_information(car)
     else:
         st.write("일치하는 차량이 없습니다.")
+
+
+def main():
+    st.title('자동차 비교')
+
+    # 자동차 선택을 위한 드롭다운 메뉴 추가
+    car_options = df['name'].unique()
+    selected_cars = st.multiselect('비교할 자동차 선택', car_options)
+
+    if len(selected_cars) != 2:
+        st.warning('비교할 자동차를 2개  선택해주세요.')
+    else:
+
+
+        car1 = selected_cars[0]
+        car2 = selected_cars[1]
+        col1, col2 = st.columns(2)
+
+        with col1:
+            display_car_information(df[df['name'] == car1].iloc[0])
+        with col2:
+            display_car_information(df[df['name'] == car2].iloc[0])
+
+if __name__ == "__main__":
+    main()

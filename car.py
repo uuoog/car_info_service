@@ -8,7 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 
-client = bigquery.Client.from_service_account_json(r'C:/Users/kdaj8/.ssh/weekly_pj/eng-copilot-392105-769b6f2fe797.json')
+client = bigquery.Client.from_service_account_json(r'./data/eng-copilot-392105-769b6f2fe797.json')
 query = f"""
 SELECT *
 FROM

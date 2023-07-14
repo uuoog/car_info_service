@@ -1,3 +1,4 @@
+pip install konlpy
 from konlpy.tag import Komoran
 import streamlit as st
 import pandas as pd

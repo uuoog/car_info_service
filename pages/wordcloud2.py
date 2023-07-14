@@ -21,7 +21,7 @@ for content in content_values:
     for word in words:
         word_count[word] = word_count.get(word, 0) + 1
 
-wordcloud = WordCloud(font_path="C:/Windows/Fonts/malgun.ttf", width=800, height=400, background_color='white').generate_from_frequencies(word_count)
+wordcloud = WordCloud(font_path="./fonts/NanumGothicCoding.ttf", width=800, height=400, background_color='white').generate_from_frequencies(word_count)
 
 wordcloud_image =wordcloud.to_image()
 

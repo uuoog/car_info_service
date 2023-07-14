@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
 komoran = Komoran(userdic="./user.dic")
 
-tqdm.pandas()
+
 tk["contents_tokens"] = tk["content_tokens"].progress_apply(lambda x: eval(x))
 
 def extract_nouns(tokens):

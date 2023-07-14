@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
 #### 키워드 검색 구현기능
 
-komoran = Komoran(userdic="./user.dic")
+komoran = Komoran(userdic="./data/user.dic")
 
 
 tk["contents_tokens"] = tk["content_tokens"].progress_apply(lambda x: eval(x))

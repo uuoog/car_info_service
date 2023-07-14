@@ -1,7 +1,7 @@
 konlpy
 pandas
 google.cloud
-sklearn
+scikit-learn
 tqdm
 streamlit
 WordCloud

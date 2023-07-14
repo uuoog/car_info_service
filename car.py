@@ -134,7 +134,7 @@ tk["contents_tokens"] = tk["content_tokens"].apply(lambda x: eval(x))
 def extract_nouns(tokens):
     return [text for text, tag in tokens if tag in ("NNP", "NNG")]
 
-tk["content_nouns"] = tk["contents_tokens"].progress_apply(lambda x: extract_nouns(x))
+tk["content_nouns"] = tk["contents_tokens"].apply(lambda x: extract_nouns(x))
 # Sklearn 이용 TfidfVectorizer 사용
 
 def dummy_fun(doc):

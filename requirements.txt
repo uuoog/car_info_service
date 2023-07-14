@@ -7,4 +7,3 @@ WordCloud
 google-oauth2-tool
 db-dtypes
 virtualenv
-jpype

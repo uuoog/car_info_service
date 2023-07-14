@@ -1,0 +1,7 @@
+konlpy
+pandas
+google.cloud
+sklearn
+tqdm
+streamlit
+WordCloud

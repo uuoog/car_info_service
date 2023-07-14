@@ -1,6 +1,12 @@
-
+from konlpy.tag import Komoran
 import streamlit as st
+import pandas as pd
 from google.cloud import bigquery
+from tqdm import tqdm
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
 
 client = bigquery.Client.from_service_account_json(r'C:/Users/kdaj8/.ssh/weekly_pj/eng-copilot-392105-769b6f2fe797.json')
 query = f"""
@@ -16,11 +22,12 @@ ON
 query_job = client.query(query)
 #데이터프레임으로 변환
 df = query_job.to_dataframe()
+tk = pd.read_csv("data/owner_reviews_tokenized.csv")
 st.sidebar.markdown("## 차량 검색")
-search_query = st.sidebar.text_input("", max_chars=50)
+search_query = st.sidebar.selectbox("차량을 선택해주세요",df["name"])
 search_button = st.sidebar.button("검색")
 
-
+#자동차 추천기능
 with st.form("my car"):
     st.title('차량 추천 서비스')
     selected_type = st.selectbox('차량 유형 선택', df['Type'].unique())
@@ -92,16 +99,7 @@ else:
 
 
 
-
-if search_button:
-    matching_cars = df[df['name'].str.contains(search_query, case=False)]
-    if not matching_cars.empty:
-        for index, car in matching_cars.iterrows():
-            display_car_information(car)
-    else:
-        st.write("일치하는 차량이 없습니다.")
-
-
+#자동차 비교
 def main():
     st.title('자동차 비교')
 
@@ -125,3 +123,60 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#### 키워드 검색 구현기능
+
+komoran = Komoran(userdic="./user.dic")
+
+tqdm.pandas()
+tk["contents_tokens"] = tk["content_tokens"].progress_apply(lambda x: eval(x))
+
+def extract_nouns(tokens):
+    return [text for text, tag in tokens if tag in ("NNP", "NNG")]
+
+tk["content_nouns"] = tk["contents_tokens"].progress_apply(lambda x: extract_nouns(x))
+# Sklearn 이용 TfidfVectorizer 사용
+
+def dummy_fun(doc):
+    return doc
+
+tfidf = TfidfVectorizer(
+    analyzer='word',
+    tokenizer=dummy_fun,
+    preprocessor=dummy_fun,
+    token_pattern=None
+)
+
+tfidf_csr_matrix = tfidf.fit_transform(tk["content_nouns"])
+
+def tokenize(text):
+    tokens = komoran.pos(text)
+    nouns = [text for text, tag in tokens if tag in ("NNP", "NNG")]
+    return nouns
+
+
+def search(query, k=5):
+    query_tokens = tokenize(query)
+    query_tfidf = tfidf.transform([query_tokens])
+    similarities = cosine_similarity(query_tfidf, tfidf_csr_matrix).flatten()
+    top_similarities = sorted(similarities)[-k:][::-1]
+    top_indices = similarities.argsort()[-k:][::-1]
+    top_titles = [tk.iloc[i]["name"] for i in top_indices]
+    return top_titles
+
+
+
+st.title("키워드를 통한 자동차 검색")
+query = st.text_input("검색어를 입력하세요.")
+if st.button("Search") :
+     top_titles = search(query)
+     for  title in top_titles:
+         st.write(title)
+
+if search_button:
+    matching_cars = df[df['name'].str.contains(search_query, case=False)]
+    if not matching_cars.empty:
+        for index, car in matching_cars.iterrows():
+            display_car_information(car)
+    else:
+        st.write("일치하는 차량이 없습니다.")

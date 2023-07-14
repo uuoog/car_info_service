@@ -5,6 +5,9 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import jpype
+
+jpype.startJVM(jpype.getDefaultJVMPath())
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets['gcp_service_account']

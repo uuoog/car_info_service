@@ -1,6 +1,6 @@
 konlpy
 pandas
-google.cloud
+google-cloud
 scikit-learn
 tqdm
 streamlit

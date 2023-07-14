@@ -4,6 +4,6 @@ google-cloud-bigquery
 scikit-learn
 streamlit
 WordCloud
-google-oauth2
+google-oauth2-tool
 db-dtypes
 virtualenv

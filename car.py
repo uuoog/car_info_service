@@ -2,12 +2,15 @@ from konlpy.tag import Komoran
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery
+from google.oauth2 import service_account
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-
-client = bigquery.Client.from_service_account_json(r'./data/eng-copilot-392105-769b6f2fe797.json')
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets['gcp_service_account']
+)
+client = bigquery.Client(credentials=credentials)
+# client = bigquery.Client.from_service_account_json(r'./data/eng-copilot-392105-769b6f2fe797.json')
 query = f"""
 SELECT *
 FROM

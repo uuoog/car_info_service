@@ -1,7 +1,6 @@
 konlpy
 pandas
-google-cloud
+google-cloud-bigquery
 scikit-learn
-tqdm
 streamlit
 WordCloud

@@ -2,7 +2,6 @@ from konlpy.tag import Komoran
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery
-from tqdm import tqdm
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 

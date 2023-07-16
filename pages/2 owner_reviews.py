@@ -1,6 +1,8 @@
 from wordcloud import WordCloud
 import pandas as pd
 import streamlit as st
+from PIL import Image
+import numpy as np
 
 df = pd.read_csv("./data/wordcloud2.csv")
 scores = pd.read_csv("./data/owner_score_preprocessing.csv")
@@ -21,7 +23,12 @@ for content in content_values:
     for word in words:
         word_count[word] = word_count.get(word, 0) + 1
 
-wordcloud = WordCloud(font_path="./fonts/NanumGothicCoding.ttf", width=800, height=400, background_color='white').generate_from_frequencies(word_count)
+icon = Image.open("./img/car.png")
+mask = Image.new("RGB", icon.size, (255,255,255))
+mask.paste(icon,icon)
+mask = np.array(mask)
+
+wordcloud = WordCloud(font_path="./fonts/NanumGothicCoding.ttf", width=600, height=400, background_color='#0E1117',mask=mask,margin=2).generate_from_frequencies(word_count)
 
 wordcloud_image =wordcloud.to_image()
 

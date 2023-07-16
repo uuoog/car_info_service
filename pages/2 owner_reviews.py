@@ -41,7 +41,7 @@ col1,col2,col3 = st.columns(3)
 with col1:
     drivability_score = car_scores['driving'].values[0]
     price_score = car_scores['price'].values[0]
-    st.write(f"운전성: {car_scores['driving'].values[0]}")
+    st.write(f"주행: {car_scores['driving'].values[0]}")
     st.write(f"가격: {car_scores['price'].values[0]}")
 with col2:
     habitability_score = car_scores['habitability'].values[0]

@@ -40,7 +40,6 @@ with st.form("my car"):
     budget = st.text_input('예산을 입력하세요', value='', placeholder='단위: 만 원')
     submitted = st.form_submit_button("검색")
 
-@st.cache_data
 def display_car_information(car):
     st.subheader(car['name'])
     st.image(car['img'])
@@ -106,7 +105,6 @@ else:
 
 
 #자동차 비교
-@st.cache_data
 def main():
     st.title('자동차 비교')
 

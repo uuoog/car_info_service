@@ -39,6 +39,8 @@ with st.form("my car"):
     selected_fuel_types = st.multiselect('차량 연료 유형 선택', fuel_kind)
     budget = st.text_input('예산을 입력하세요', value='', placeholder='단위: 만 원')
     submitted = st.form_submit_button("검색")
+
+@st.cache_data
 def display_car_information(car):
     st.subheader(car['name'])
     st.image(car['img'])
@@ -104,6 +106,7 @@ else:
 
 
 #자동차 비교
+@st.cache_data
 def main():
     st.title('자동차 비교')
 
@@ -157,6 +160,7 @@ def tokenize(text):
     return nouns
 
 
+@st.cache_data
 def search(query, k=5):
     query_tokens = tokenize(query)
     query_tfidf = tfidf.transform([query_tokens])

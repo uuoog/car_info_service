@@ -11,8 +11,10 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 client = bigquery.Client(credentials=credentials)
 # client = bigquery.Client.from_service_account_json(r'./data/eng-copilot-392105-769b6f2fe797.json')
+
 query = f"""
-SELECT *
+SELECT *, REPLACE(km_l, "~", "-") as r_km_l, REPLACE(cc, "~", "-") as r_cc
+
 FROM
 	`eng-copilot-392105.Dataset.car_by_price_fuel`
 JOIN
@@ -42,9 +44,9 @@ def display_car_information(car):
     st.image(car['img'])
     st.write(f"연료 종류: {car['fuel_kind']}")
     st.write(f"가격: {car['min_price']}~{car['max_price']} 만원")
-    st.write(f"연비: {car['km_l']}")
+    st.write(f"연비: {car['r_km_l']}")
     st.write(f"차량 유형: {car['Size']} {car['Type']}")
-    st.write(f"배기량: {car['cc']}")
+    st.write(f"배기량: {car['r_cc']}")
 
 
 
@@ -81,9 +83,9 @@ if budget:
                         st.image(car1['img'])
                         st.write(f"연료 종류: {car1['fuel_kind']}")
                         st.write(f"가격: {car1['min_price']}~{car1['max_price']} 만 원")
-                        st.write(f"연비: {car1['km_l']}")
+                        st.write(f"연비: {car1['r_km_l']}")
                         st.write(f"차량 유형: {car1['Size']} {car1['Type']}")
-                        st.write(f"배기량: {car1['cc']}")
+                        st.write(f"배기량: {car1['r_cc']}")
                 with col2:
                     if i + 1 < len(recommended_cars):
                         car2 = recommended_cars.iloc[i + 1]
@@ -91,9 +93,9 @@ if budget:
                         st.image(car2['img'])
                         st.write(f"연료 종류: {car2['fuel_kind']}")
                         st.write(f"가격: {car2['min_price']}~{car2['max_price']} 만 원")
-                        st.write(f"연비: {car2['km_l']}")
+                        st.write(f"연비: {car2['r_km_l']}")
                         st.write(f"차량 유형: {car2['Size']} {car2['Type']}")
-                        st.write(f"배기량: {car2['cc']}")
+                        st.write(f"배기량: {car2['r_cc']}")
 
 else:
     st.warning('예산을 입력해주세요.')

@@ -1,4 +1,4 @@
-from konlpy.sttag import Komoran
+from konlpy.tag import Komoran
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery

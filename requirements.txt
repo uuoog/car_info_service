@@ -11,4 +11,4 @@ supabase
 Pillow
 numpy
 matplotlib
-re
+regex

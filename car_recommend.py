@@ -1,10 +1,13 @@
-from konlpy.tag import Komoran
+from konlpy.sttag import Komoran
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery
 from google.oauth2 import service_account
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
+import re
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets['gcp_service_account']
@@ -31,6 +34,7 @@ st.sidebar.markdown("## 차량 검색")
 search_query = st.sidebar.selectbox("차량을 선택해주세요",df["name"])
 search_button = st.sidebar.button("검색")
 
+st.image("./img/banner.png")
 #자동차 추천기능
 with st.form("my car"):
     st.title('차량 추천 서비스')
@@ -49,7 +53,13 @@ def display_car_information(car):
     st.write(f"차량 유형: {car['Size']} {car['Type']}")
     st.write(f"배기량: {car['r_cc']}")
 
-
+def extract_minimum_value(text):
+    pattern = r'\d+(.\d+)?' # 소수점 문자를 찾기위해 ?는 0번째 또는 1번째 나타나는 숫자
+    match = re.search(pattern, text)  # 패턴과 일치하는 첫 번째 숫자를 찾음
+    if match:
+        return float(match.group())
+    else:
+        return None
 
 if budget:
     try:
@@ -69,6 +79,8 @@ if budget:
             (df['Type'] == selected_type)
             &(df['min_price'] <= budget) & (df['max_price'] >= budget)]
 
+        recommended_cars['composite_fuel_economy'] = recommended_cars['km_l'].apply(extract_minimum_value)
+
         st.header('추천 차량')
         #st.table(recommended_cars)
         if recommended_cars.empty:
@@ -78,25 +90,29 @@ if budget:
             col1, col2 = st.columns(2)
             for i in range(0, len(recommended_cars), 2):
                 with col1:
-                    if i < len(recommended_cars):
-                        car1 = recommended_cars.iloc[i]
-                        st.subheader(car1['name'])
-                        st.image(car1['img'])
-                        st.write(f"연료 종류: {car1['fuel_kind']}")
-                        st.write(f"가격: {car1['min_price']}~{car1['max_price']} 만 원")
-                        st.write(f"연비: {car1['r_km_l']}")
-                        st.write(f"차량 유형: {car1['Size']} {car1['Type']}")
-                        st.write(f"배기량: {car1['r_cc']}")
+                    car1 = recommended_cars.iloc[i]
+                    display_car_information(car1)
                 with col2:
                     if i + 1 < len(recommended_cars):
                         car2 = recommended_cars.iloc[i + 1]
-                        st.subheader(car2['name'])
-                        st.image(car2['img'])
-                        st.write(f"연료 종류: {car2['fuel_kind']}")
-                        st.write(f"가격: {car2['min_price']}~{car2['max_price']} 만 원")
-                        st.write(f"연비: {car2['r_km_l']}")
-                        st.write(f"차량 유형: {car2['Size']} {car2['Type']}")
-                        st.write(f"배기량: {car2['r_cc']}")
+                        display_car_information(car2)
+
+        if not recommended_cars.empty:
+            st.markdown("예산에 맞춰진 차량의 연비 경제성 비교입니다.")
+
+            font_path = './fonts/NanumGothicCoding.ttf'
+            plt.rcParams['font.family'] = FontProperties(fname=font_path).get_name()
+
+            sorted_cars = recommended_cars.sort_values('composite_fuel_economy')
+            fuel_economy_values = sorted_cars['composite_fuel_economy'].tolist()
+            fig, ax = plt.subplots()
+            ax.barh(sorted_cars['name'], fuel_economy_values)
+            for i, v in enumerate(fuel_economy_values):
+                ax.text(v + 0.1, i, str(v), color='black', ha='left', va='center')
+            plt.title('추천 차량의 연비 경제성')
+            plt.xlabel('연비 (km/l)')
+            plt.ylabel('차량')
+            st.pyplot(fig)
 
 else:
     st.warning('예산을 입력해주세요.')

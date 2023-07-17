@@ -10,3 +10,5 @@ virtualenv
 supabase
 Pillow
 numpy
+matplotlib
+re

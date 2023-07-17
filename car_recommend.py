@@ -108,7 +108,7 @@ if budget:
             for font_file in font_files:
                 fm.fontManager.addfont(font_file)
             fm._load_fontmanager(try_read_cache=False)
-            plt.rcParams['font.family'] = 'NanumGothic'
+            plt.rcParams['font.family'] = 'NanumGothicCoding'
 
 
             sorted_cars = recommended_cars.sort_values('composite_fuel_economy')

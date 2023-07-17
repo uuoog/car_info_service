@@ -12,4 +12,3 @@ Pillow
 numpy
 matplotlib
 regex
-matplotlib-font_manager

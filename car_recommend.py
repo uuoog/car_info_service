@@ -34,7 +34,7 @@ st.sidebar.markdown("## 차량 검색")
 search_query = st.sidebar.selectbox("차량을 선택해주세요",df["name"])
 search_button = st.sidebar.button("검색")
 
-st.image("./img/banner.png")
+
 #자동차 추천기능
 with st.form("my car"):
     st.title('차량 추천 서비스')

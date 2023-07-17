@@ -6,15 +6,12 @@ from google.oauth2 import service_account
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-from matplotlib.font_manager import FontProperties
 import re
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets['gcp_service_account']
 )
 client = bigquery.Client(credentials=credentials)
-# client = bigquery.Client.from_service_account_json(r'./data/eng-copilot-392105-769b6f2fe797.json')
 
 query = f"""
 SELECT *, REPLACE(km_l, "~", "-") as r_km_l, REPLACE(cc, "~", "-") as r_cc

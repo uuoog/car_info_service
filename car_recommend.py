@@ -55,7 +55,7 @@ def display_car_information(car):
     st.write(f"배기량: {car['r_cc']}")
 
 def extract_minimum_value(text):
-    pattern = r'\d+(.\d+)?' # 소수점 문자를 찾기위해 ?는 0번째 또는 1번째 나타나는 숫자
+    pattern = r'\d+(\.\d+)?' # 소수점 문자를 찾기위해 ?는 0번째 또는 1번째 나타나는 숫자
     match = re.search(pattern, text)  # 패턴과 일치하는 첫 번째 숫자를 찾음
     if match:
         return float(match.group())

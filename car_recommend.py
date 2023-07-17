@@ -6,7 +6,6 @@ from google.oauth2 import service_account
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
 import re
 
 credentials = service_account.Credentials.from_service_account_info(
@@ -100,8 +99,7 @@ if budget:
         if not recommended_cars.empty:
             st.markdown("예산에 맞춰진 차량의 연비 경제성 비교입니다.")
 
-            font_path = './fonts/NanumGothicCoding.ttf'
-            plt.rcParams['font.family'] = FontProperties(fname=font_path).get_name()
+            plt.rcParams['font.family'] = 'NanumGothicCoding'
 
             sorted_cars = recommended_cars.sort_values('composite_fuel_economy')
             fuel_economy_values = sorted_cars['composite_fuel_economy'].tolist()

@@ -40,8 +40,10 @@ if data['status'] == 'OK':
 else:
     print('장소 검색에 실패했습니다.')
 
-# 지도 생성
 map_center = [list(search_dict.values())[0][0], list(search_dict.values())[0][1]]  # 지도 중심 좌표 (위도, 경도)
+
+# 지도 생성
+# map_center = [list(search_dict.values())[0][0], list(search_dict.values())[0][1]]  # 지도 중심 좌표 (위도, 경도)
 map_zoom = 12  # 확대/축소 레벨 (0부터 높아질수록 확대)
 map_osm = folium.Map(location=map_center, zoom_start=map_zoom)
 

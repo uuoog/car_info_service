@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 from PIL import Image
 import numpy as np
+import time
 
 df = pd.read_csv("./data/wordcloud2.csv")
 scores = pd.read_csv("./data/owner_score_preprocessing.csv")
@@ -28,10 +29,13 @@ mask = Image.new("RGB", icon.size, (255,255,255))
 mask.paste(icon,icon)
 mask = np.array(mask)
 
-wordcloud = WordCloud(font_path="./fonts/NanumGothicCoding.ttf", width=600, height=400, background_color='#0E1117',mask=mask,margin=2).generate_from_frequencies(word_count)
+wordcloud = WordCloud(font_path="./fonts/NanumGothicCoding.ttf", width=600, height=400, background_color='white',mask=mask,margin=2).generate_from_frequencies(word_count)
 
 wordcloud_image =wordcloud.to_image()
 
+with st.spinner("wordcloud를 구성 중 입니다."):
+    time.sleep(3)
+st.success('완료!')
 st.image(wordcloud_image)
 
 car_scores = scores[scores['name'] == selected_cars]

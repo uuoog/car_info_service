@@ -7,6 +7,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import re
+import matplotlib.font_manager as fm
+import time
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets['gcp_service_account']
@@ -31,6 +33,7 @@ tk = pd.read_csv("data/owner_reviews_tokenized.csv")
 st.sidebar.markdown("## 차량 검색")
 search_query = st.sidebar.selectbox("차량을 선택해주세요",df["name"])
 search_button = st.sidebar.button("검색")
+
 
 
 #자동차 추천기능
@@ -132,9 +135,12 @@ def main():
     # 자동차 선택을 위한 드롭다운 메뉴 추가
     car_options = df['name'].unique()
     selected_cars = st.multiselect('비교할 자동차 선택', car_options)
+    with st.spinner("비교 중 입니다."):
+        time.sleep(3)
 
     if len(selected_cars) != 2:
         st.warning('비교할 자동차를 2개  선택해주세요.')
+
     else:
 
 
@@ -146,6 +152,7 @@ def main():
             display_car_information(df[df['name'] == car1].iloc[0])
         with col2:
             display_car_information(df[df['name'] == car2].iloc[0])
+
 
 if __name__ == "__main__":
     main()
@@ -194,9 +201,11 @@ def search(query, k=5):
 st.title("키워드를 통한 자동차 검색")
 query = st.text_input("검색어를 입력하세요.")
 if st.button("Search") :
-     top_titles = search(query)
-     for  title in top_titles:
-         st.write(title)
+    with st.spinner("키워드롤 통해 검색 중 입니다."):
+        time.sleep(3)
+    top_titles = search(query)
+    for  title in top_titles:
+        st.write(title)
 
 if search_button:
     matching_cars = df[df['name'].str.contains(search_query, case=False)]

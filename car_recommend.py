@@ -34,8 +34,6 @@ st.sidebar.markdown("## 차량 검색")
 search_query = st.sidebar.selectbox("차량을 선택해주세요",df["name"])
 search_button = st.sidebar.button("검색")
 
-
-
 #자동차 추천기능
 with st.form("my car"):
     st.title('차량 추천 서비스')
@@ -135,14 +133,11 @@ def main():
     # 자동차 선택을 위한 드롭다운 메뉴 추가
     car_options = df['name'].unique()
     selected_cars = st.multiselect('비교할 자동차 선택', car_options)
-    with st.spinner("비교 중 입니다."):
-        time.sleep(3)
 
     if len(selected_cars) != 2:
         st.warning('비교할 자동차를 2개  선택해주세요.')
 
     else:
-
 
         car1 = selected_cars[0]
         car2 = selected_cars[1]

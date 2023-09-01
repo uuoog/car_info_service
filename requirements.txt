@@ -14,5 +14,3 @@ matplotlib
 regex
 streamlit_folium
 folium
-time
-pip==22.2.1

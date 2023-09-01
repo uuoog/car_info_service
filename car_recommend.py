@@ -8,7 +8,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import re
 import matplotlib.font_manager as fm
-from time import time
+import time
+
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets['gcp_service_account']
